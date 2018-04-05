@@ -15,7 +15,7 @@ Le lancement doit se faire simplement avec la commande >> php bin/console server
 
 Le sujet du challenge :
 Un vendeur de lunette veut développer une application pour gérer ces produits.
- - Un produit est constitué de : titre, description, Quantité en Stock, marque, Prix ttc, types (soleil, vue, sport), genre (homme, femme, mixte, enfant), fournisseur
+ - Un produit est constitué de : titre, description, Quantité en Stock, marque, Prix ttc, types (soleil, vue, sport), genre (homme, femme, mixte, enfant)
  - Chaque marque a un seul et unique fournisseur.
  - Un client peut s'inscrire sur la plateforme et effectuer plusieurs commandes. Pour cela il doit saisir son Nom, Prénom, Adresse, email et téléphone. Toutes ces informations sont obligatoires.
  
