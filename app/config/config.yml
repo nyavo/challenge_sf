@@ -30,6 +30,8 @@ framework:
     assets: ~
     php_errors:
         log: true
+    templating:
+        engines: ['twig']
 
 # Twig Configuration
 twig:
@@ -46,6 +48,7 @@ doctrine:
         user: '%database_user%'
         password: '%database_password%'
         charset: UTF8
+        server_version: '5.5' # in case you are using mysql 5.5
         mapping_types:
             enum: string
         # if using pdo_sqlite as your database driver:
