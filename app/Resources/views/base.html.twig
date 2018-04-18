@@ -17,8 +17,10 @@
         {% endfor %}
         {% block body %}{% endblock %}
         {% block javascripts %}
-        <script src="{{ asset('bundles/app/jQuery/jquery-2.2.3.min.js') }}"></script>
-        <script src="{{ asset('bundles/app/datatables/jquery.dataTables.min.js') }}"></script>
+            <script src="{{ asset('bundles/app/jQuery/jquery-2.2.3.min.js') }}"></script>
+            <script src="{{ asset('bundles/app/datatables/jquery.dataTables.min.js') }}"></script>
+            <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+            <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
         {% endblock %}
     </body>
 </html>
