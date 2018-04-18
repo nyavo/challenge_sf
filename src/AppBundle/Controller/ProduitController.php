@@ -35,7 +35,7 @@ class ProduitController extends Controller
 
     /**
      * @Route("/add", name="_challenge_produit_add")
-     * @Route("/update/{id}", name="_challenge_produit_update")
+     * @Route("/update/{id}", name="_challenge_produit_update", options={"expose"=true})
      *
      * @param Request $request
      *
@@ -76,7 +76,7 @@ class ProduitController extends Controller
     }
 
     /**
-     * @Route("/getProduits", name="_challenge_get_produits")
+     * @Route("/getProduits", name="_challenge_get_produits", options={"expose"=true})
      */
     public function getProducts()
     {
