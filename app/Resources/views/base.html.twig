@@ -5,6 +5,7 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/app/datatables/jquery.dataTables.min.css') }}"/>
     </head>
     <body>
         {% for flashMessage in app.session.flashbag.get('error') %}
@@ -15,6 +16,9 @@
             <p> Success : {{ flashMessage }}</p>
         {% endfor %}
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+        <script src="{{ asset('bundles/app/jQuery/jquery-2.2.3.min.js') }}"></script>
+        <script src="{{ asset('bundles/app/datatables/jquery.dataTables.min.js') }}"></script>
+        {% endblock %}
     </body>
 </html>

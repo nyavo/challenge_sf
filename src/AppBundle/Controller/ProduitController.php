@@ -11,6 +11,7 @@ use AppBundle\Entity\Produit;
 use AppBundle\Form\Type\ProduitType;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -72,6 +73,28 @@ class ProduitController extends Controller
         return $this->render('AppBundle:Produit:create.html.twig', array(
             'form' => $form->createView(),
         ));
+    }
+
+    /**
+     * @Route("/getProduits", name="_challenge_get_produits")
+     */
+    public function getProducts()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $data = $em->getRepository('AppBundle:Produit')->getDataToArray();
+
+        $response = new JsonResponse();
+
+        $response->setData(
+            array(
+                'recordsTotal'    => count($data),
+                'recordsFiltered' => count($data),
+                'data'            => $data,
+            )
+        );
+
+        return $response;
     }
 }
 

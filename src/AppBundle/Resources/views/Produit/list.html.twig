@@ -2,4 +2,43 @@
 {% block title %}Liste produit{% endblock %}
 {% block body %}
     <h1>Liste des produits</h1>
+    <table id="list-produit">
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Prix</th>
+                <th>Stock</th>
+            </tr>
+        </thead>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function(){
+            $('#list-produit').DataTable({
+                "processing": true,
+                "serverSide": false,
+                "searching": true,
+                "paging": true,
+                "info": false,
+                "ajax": {
+                    "url": '{{ path('_challenge_get_produits') }}',
+                    "type": "POST"
+                },
+                order: [],
+                "pageLength": 10,
+                "bLengthChange": false,
+                "autoWidth": false,
+                "columns": [
+                    {"data": "titre"},
+                    {"data": "description"},
+                    {"data": "prix"},
+                    {"data": "stock"}
+                ]
+            });
+        })
+    </script>
 {% endblock %}
