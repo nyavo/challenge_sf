@@ -96,5 +96,39 @@ class ProduitController extends Controller
 
         return $response;
     }
+
+    /**
+     * @Route("/remove/{id}", name="_challenge_remove_product", options={"expose"=true})
+     *
+     * @param int $id
+     *
+     * @return JsonResponse
+     */
+    public function remove($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $produit = $em->getRepository('AppBundle:Produit')->find($id);
+        $dataReturn = array(
+            'success' => false,
+            'message' => '',
+        );
+        if ($produit instanceof Produit) {
+            try {
+                $em->remove($produit);
+                $em->flush();
+                $dataReturn['success'] = true;
+                $dataReturn['message'] = 'Suppression réussie';
+            } catch (\Exception $exc) {
+                $dataReturn['message'] = $exc->getMessage();
+            }
+        } else {
+            $dataReturn['message'] = 'Ce produit a déjà été supprimé';
+        }
+        $response = new JsonResponse();
+        $response->setData($dataReturn);
+
+        return $response;
+    }
 }
 

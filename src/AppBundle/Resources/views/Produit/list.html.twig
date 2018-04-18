@@ -2,6 +2,7 @@
 {% block title %}Liste produit{% endblock %}
 {% block body %}
     <h1>Liste des produits</h1>
+    <div id="message-bloc" style="display: none"></div>
     <table id="list-produit">
         <thead>
             <tr>
@@ -9,6 +10,7 @@
                 <th>Description</th>
                 <th>Prix</th>
                 <th>Stock</th>
+                <th></th>
                 <th></th>
             </tr>
         </thead>
@@ -44,13 +46,35 @@
                         "orderable": false,
                         "render": function(data, type, row){
                             return '<a href="#" class="updateProduit" data-id="'+row.id+'">Modifier</a>';
-                        }}
+                        }
+                    },
+                    {
+                        "targets": 0,
+                        "searchable": false,
+                        "orderable": false,
+                        "render": function(data, type, row){
+                            return '<a href="#" class="removeProduit" data-id="'+row.id+'">Supprimer</a>';
+                        }
+                    }
                 ]
             });
         });
 
         $(document).on('click', '.updateProduit', function(){
             location.href = Routing.generate('_challenge_produit_update', {'id': $(this).data('id')});
+        });
+
+        $(document).on('click', '.removeProduit', function(){
+            $.ajax({
+                url: Routing.generate('_challenge_remove_product', {'id': $(this).data('id')}),
+                success: function(_resp) {
+                    $('#message-bloc').text(_resp.message);
+                    $('#message-bloc').show();
+                    if (_resp.success) {
+                        $('#list-produit').DataTable().ajax.reload();
+                    }
+                }
+            });
         });
     </script>
 {% endblock %}
