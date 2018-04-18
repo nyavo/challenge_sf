@@ -7,6 +7,13 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
+        {% for flashMessage in app.session.flashbag.get('error') %}
+            <p>Erreur : {{ flashMessage }}</p>
+        {% endfor %}
+
+        {% for flashMessage in app.session.flashbag.get('success') %}
+            <p> Success : {{ flashMessage }}</p>
+        {% endfor %}
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>

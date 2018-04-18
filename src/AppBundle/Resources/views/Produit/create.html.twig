@@ -1,0 +1,28 @@
+{% extends '::base.html.twig' %}
+{% block title %}Ajout produit{% endblock %}
+{% block body %}
+    <h1>Nouveau produit</h1>
+    {{ form_start(form) }}
+    <div>{{ form_label(form.titre) }} : {{ form_widget(form.titre) }}
+        <p>{{ form_errors(form.titre) }}</p>
+    </div>
+    <div>{{ form_label(form.description) }} : {{ form_widget(form.description) }}
+        <p>{{ form_errors(form.description) }}</p>
+    </div>
+    <div>{{ form_label(form.prix) }} : {{ form_widget(form.prix) }}
+        <p>{{ form_errors(form.prix) }}</p>
+    </div>
+    <div>{{ form_label(form.stock) }} : {{ form_widget(form.stock) }}
+        <p>{{ form_errors(form.stock) }}</p>
+    </div>
+    <div>{{ form_label(form.type) }} : {{ form_widget(form.type) }}
+        <p>{{ form_errors(form.type) }}</p>
+    </div>
+    <div>{{ form_label(form.genre) }} : {{ form_widget(form.genre) }}
+        <p>{{ form_errors(form.genre) }}</p>
+    </div>
+    <div>{{ form_label(form.fournisseur) }} : {{ form_widget(form.fournisseur) }}
+        <p>{{ form_errors(form.fournisseur) }}</p>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
