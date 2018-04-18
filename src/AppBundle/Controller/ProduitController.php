@@ -9,6 +9,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Produit;
 use AppBundle\Form\Type\ProduitType;
+use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,15 +34,24 @@ class ProduitController extends Controller
 
     /**
      * @Route("/add", name="_challenge_produit_add")
+     * @Route("/update/{id}", name="_challenge_produit_update")
      *
      * @param Request $request
      *
+     * @param null    $id
+     *
      * @return Response
+     *
+     * @throws EntityNotFoundException
      */
-    public function addProduit(Request $request)
+    public function addOrUpdateProduit(Request $request, $id = null)
     {
         $em = $this->getDoctrine()->getManager();
-        $produit = new Produit();
+        $produit = is_null($id) ? new Produit() : $em->getRepository('AppBundle:Produit')->find($id);
+
+        if (!$produit instanceof Produit) {
+            throw new EntityNotFoundException();
+        }
         $form = $this->createForm(ProduitType::class, $produit);
 
         $form->handleRequest($request);
@@ -50,7 +60,8 @@ class ProduitController extends Controller
             try {
                 $em->persist($produit);
                 $em->flush();
-                $this->addFlash('success', 'Ajout réussi');
+                $message = $request->get('_route') == '_challenge_produit_add' ? 'Ajout réussi' : 'Modification réussi';
+                $this->addFlash('success', $message);
             } catch (\Exception $exc) {
                 $this->addFlash('error', $exc->getMessage());
             }

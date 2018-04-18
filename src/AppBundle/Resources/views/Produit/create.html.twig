@@ -1,7 +1,13 @@
 {% extends '::base.html.twig' %}
-{% block title %}Ajout produit{% endblock %}
+{% block title %}{% if app.request.get('_route') == '_challenge_produit_add' %}Ajout produit{% else %}Modification produit{% endif %}{% endblock %}
 {% block body %}
-    <h1>Nouveau produit</h1>
+    <h1>
+        {% if app.request.get('_route') == '_challenge_produit_add' %}
+            Nouveau produit
+        {% else %}
+            Modification produit
+        {% endif %}
+    </h1>
     {{ form_start(form) }}
     <div>{{ form_label(form.titre) }} : {{ form_widget(form.titre) }}
         <p>{{ form_errors(form.titre) }}</p>
