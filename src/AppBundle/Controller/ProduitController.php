@@ -7,7 +7,10 @@
  */
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\BonEntree;
+use AppBundle\Entity\BonSortie;
 use AppBundle\Entity\Produit;
+use AppBundle\Form\Type\FluxType;
 use AppBundle\Form\Type\ProduitType;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -127,6 +130,114 @@ class ProduitController extends Controller
         $response->setData($dataReturn);
 
         return $response;
+    }
+
+    /**
+     * @Route("/flux", name="_challenge_produit_flux", options={"expose"=true})
+     *
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @throws EntityNotFoundException
+     */
+    public function flux(Request $request)
+    {
+        $produitId = $request->get('id');
+
+        $produit = $this->getDoctrine()->getRepository('AppBundle:Produit')->find($produitId);
+
+        if (!$produit instanceof Produit) {
+            throw new EntityNotFoundException();
+        }
+        $type = $request->get('type');
+
+        return $this->render('AppBundle:Flux:list.html.twig', array(
+            'produit' => $produit,
+            'type' => $type,
+        ));
+    }
+
+    /**
+     * @Route("/flux/list", name="_challenge_produit_flux_list", options={"expose"=true})
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function getFlux(Request $request)
+    {
+        $produitId = $request->get('id');
+        $type = $request->get('type');
+        $entityName = $type == 'e' ? 'AppBundle:BonEntree' : 'AppBundle:BonSortie';
+
+        $flux = $this->get('challenge.common.service')->getDataToArray($entityName, array('produit = :produit'), array('produit' => $produitId));
+
+        $response = new JsonResponse();
+
+        $response->setData(
+            array(
+                'recordsTotal'    => count($flux),
+                'recordsFiltered' => count($flux),
+                'data'            => $flux,
+            )
+        );
+
+        return $response;
+    }
+
+    /**
+     * @Route("/flux/update/{type}/{id}", name="_challenge_update_flux", options={"expose"=true})
+     *
+     * @param Request $request
+     * @param string  $type
+     * @param null    $id
+     *
+     * @throws EntityNotFoundException
+     */
+    public function addOrUpdateFlux(Request $request, $type, $id = null, $produitId = null)
+    {
+        $em = $this->getDoctrine()->getManager();
+        if ($type == 'e') {
+            $flux = is_null($id) ? new BonEntree() : $em->getRepository('AppBundle:BonEntree')->find($id);
+            if (!$flux instanceof BonEntree) {
+                throw new EntityNotFoundException();
+            }
+        } else {
+            $flux = is_null($id) ? new BonSortie() : $em->getRepository('AppBundle:BonSortie')->find($id);
+            if (!$flux instanceof BonSortie) {
+                throw new EntityNotFoundException();
+            }
+        }
+
+        if ($request->get('_route') != '_challenge_update_flux') {
+            $produit = $em->getRepository('AppBundle:Produit')->find($produitId);
+            if (!$produit instanceof Produit) {
+                throw new EntityNotFoundException();
+            }
+        } else {
+            $produit = $flux->getProduit();
+        }
+
+        $form = $this->createForm(FluxType::class, $flux);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            if (isset($produit))
+            {
+                $flux->setProduit($produit);
+            }
+            $update = $request->get('_route') == '_challenge_update_flux';
+            $this->get('challenge.common.service')->saveFlux($produit, $flux, $update);
+        }
+
+        return $this->render('AppBundle:Flux:create.html.twig', array(
+            'produit' => $produit,
+            'type' => $type,
+            'form' => $form->createView(),
+        ));
     }
 }
 

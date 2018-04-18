@@ -12,6 +12,8 @@
                 <th>Stock</th>
                 <th></th>
                 <th></th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
     </table>
@@ -57,6 +59,22 @@
                         "render": function(data, type, row){
                             return '<a href="#" class="removeProduit" data-id="'+row.id+'">Supprimer</a>';
                         }
+                    },
+                    {
+                        "targets": 0,
+                        "searchable": false,
+                        "orderable": false,
+                        "render": function(data, type, row){
+                            return '<a href="#" class="entree" data-id="'+row.id+'">Liste Entrée</a>';
+                        }
+                    },
+                    {
+                        "targets": 0,
+                        "searchable": false,
+                        "orderable": false,
+                        "render": function(data, type, row){
+                            return '<a href="#" class="sortie" data-id="'+row.id+'">Liste Sortie</a>';
+                        }
                     }
                 ]
             });
@@ -81,6 +99,14 @@
 
         $('#addNewProduit').on('click', function(){
             location.href = Routing.generate('_challenge_produit_add');
-        })
+        });
+
+        $(document).on('click', '.entree', function(){
+            location.href = Routing.generate('_challenge_produit_flux', {'id': $(this).data('id'), 'type': 'e'})
+        });
+
+        $(document).on('click', '.sortie', function(){
+            location.href = Routing.generate('_challenge_produit_flux', {'id': $(this).data('id'), 'type': 's'})
+        });
     </script>
 {% endblock %}

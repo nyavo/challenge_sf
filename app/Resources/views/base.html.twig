@@ -3,9 +3,12 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+            <link rel="stylesheet" type="text/css" href="{{ asset('bundles/app/datatables/jquery.dataTables.min.css') }}"/>
+            <link rel="stylesheet" type="text/css" href="{{ asset('bundles/app/bootstrap/css/bootstrap.min.css') }}"/>
+            <link rel="stylesheet" type="text/css" href="{{ asset('bundles/app/datepicker/datepicker3.css') }}"/>
+        {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/app/datatables/jquery.dataTables.min.css') }}"/>
     </head>
     <body>
         {% for flashMessage in app.session.flashbag.get('error') %}
@@ -18,6 +21,9 @@
         {% block body %}{% endblock %}
         {% block javascripts %}
             <script src="{{ asset('bundles/app/jQuery/jquery-2.2.3.min.js') }}"></script>
+            <script src="{{ asset('bundles/app/bootstrap/js/bootstrap.min.js') }}"></script>
+            <script src="{{ asset('bundles/app/datepicker/bootstrap-datepicker.js') }}"></script>
+            <script src="{{ asset('bundles/app/datepicker/locales/bootstrap-datepicker.fr.js') }}"></script>
             <script src="{{ asset('bundles/app/datatables/jquery.dataTables.min.js') }}"></script>
             <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
             <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>

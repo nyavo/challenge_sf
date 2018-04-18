@@ -1,0 +1,98 @@
+{% if type == 'e' %}
+    {% set titre = "Bon entrée du produit " ~ produit.titre %}
+{% else %}
+    {% set titre = "Bon de sortie du produit " ~ produit.titre %}
+{% endif %}
+{% extends '::base.html.twig' %}
+{% block title %}{{ titre }}{% endblock %}
+{% block body %}
+<h1>{{ titre }}</h1>
+    <table id="list-flux">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Quantité</th>
+                <th style="width: 5%"></th>
+                <th style="width: 5%"></th>
+            </tr>
+        </thead>
+    </table>
+
+    {#<button id="addNewFrs">Nouveau fournisseur</button>#}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function(){
+            $('#list-flux').DataTable({
+                "processing": true,
+                "serverSide": false,
+                "searching": true,
+                "paging": true,
+                "info": false,
+                "ajax": {
+                    "url": Routing.generate('_challenge_produit_flux_list'),
+                    "type": "POST",
+                    "data": {
+                        "id": {{ produit.id }},
+                        "type": '{{ type }}'
+                    }
+                },
+                order: [],
+                "pageLength": 10,
+                "bLengthChange": false,
+                "autoWidth": false,
+                "columns": [
+                    {
+                        "data": "date",
+                        "render": function(d) {
+                            var dateFlux = new Date(d.date);
+
+                            return ("0" + dateFlux.getDate()).slice(-2) + "-" + ("0"+(dateFlux.getMonth()+1)).slice(-2) + "-" +
+                                dateFlux.getFullYear() + " " + ("0" + dateFlux.getHours()).slice(-2) + ":" + ("0" + dateFlux.getMinutes()).slice(-2);
+                        }
+                    },
+                    { "data": "qte" },
+                    {
+                        "targets": 0,
+                        "searchable": false,
+                        "orderable": false,
+                        "render": function(data, type, row){
+                            return '<a href="#" class="updateFlux" data-id="'+row.id+'">Modifier</a>';
+                        }
+                    },
+                    {
+                        "targets": 0,
+                        "searchable": false,
+                        "orderable": false,
+                        "render": function(data, type, row){
+                            return '<a href="#" class="removeFlux" data-id="'+row.id+'">Supprimer</a>';
+                        }
+                    }
+                ]
+            });
+        });
+
+        $(document).on('click', '.updateFlux', function(){
+            location.href = Routing.generate('_challenge_update_flux', {'id': $(this).data('id'), 'type': '{{ type }}'});
+        });
+
+        $(document).on('click', '.removeFlux', function(){
+            $.ajax({
+                url: Routing.generate('_challenge_remove_frs', {'id': $(this).data('id')}),
+                success: function(_resp) {
+                    $('#message-bloc').text(_resp.message);
+                    $('#message-bloc').show();
+                    if (_resp.success) {
+                        $('#list-produit').DataTable().ajax.reload();
+                    }
+                }
+            });
+        });
+
+        $('#addNewFlux').on('click', function(){
+            location.href = Routing.generate('_challenge_frs_add');
+        })
+    </script>
+{% endblock %}
