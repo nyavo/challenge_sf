@@ -18,7 +18,7 @@
         </thead>
     </table>
 
-    {#<button id="addNewFrs">Nouveau fournisseur</button>#}
+    <div class="btn btn-primary btn-sm" id="nouveauFlux">Nouveau</div>
 {% endblock %}
 
 {% block javascripts %}
@@ -91,8 +91,8 @@
             });
         });
 
-        $('#addNewFlux').on('click', function(){
-            location.href = Routing.generate('_challenge_frs_add');
+        $('#nouveauFlux').on('click', function(){
+            location.href = Routing.generate('_challenge_add_flux', {'type': '{{ type }}', 'produitId': {{ produit.id }}});
         })
     </script>
 {% endblock %}

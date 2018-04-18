@@ -188,10 +188,13 @@ class ProduitController extends Controller
 
     /**
      * @Route("/flux/update/{type}/{id}", name="_challenge_update_flux", options={"expose"=true})
+     * @Route("/flux/add/{type}/{produitId}", name="_challenge_add_flux", options={"expose"=true})
      *
      * @param Request $request
      * @param string  $type
      * @param null    $id
+     *
+     * @return Response
      *
      * @throws EntityNotFoundException
      */

@@ -1,8 +1,8 @@
 {% set fluxType = type=="e" ? 'entrée' : 'sortie' %}
 {% if app.request.get('_route') == '_challenge_update_flux' %}
-    {% set titre = 'Modification ' ~ fluxType %}
+    {% set titre = 'Modification ' ~ fluxType ~ ' pour le produit ' ~ produit.titre %}
 {% else %}
-    {% set titre = 'Création ' ~ fluxType %}
+    {% set titre = 'Création ' ~ fluxType ~ ' pour le produit ' ~ produit.titre %}
 {% endif %}
 
 {% extends '::base.html.twig' %}

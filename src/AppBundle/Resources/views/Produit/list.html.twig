@@ -49,22 +49,6 @@
                         "searchable": false,
                         "orderable": false,
                         "render": function(data, type, row){
-                            return '<a href="#" class="updateProduit" data-id="'+row.id+'">Modifier</a>';
-                        }
-                    },
-                    {
-                        "targets": 0,
-                        "searchable": false,
-                        "orderable": false,
-                        "render": function(data, type, row){
-                            return '<a href="#" class="removeProduit" data-id="'+row.id+'">Supprimer</a>';
-                        }
-                    },
-                    {
-                        "targets": 0,
-                        "searchable": false,
-                        "orderable": false,
-                        "render": function(data, type, row){
                             return '<a href="#" class="entree" data-id="'+row.id+'">Liste Entrée</a>';
                         }
                     },
@@ -74,6 +58,22 @@
                         "orderable": false,
                         "render": function(data, type, row){
                             return '<a href="#" class="sortie" data-id="'+row.id+'">Liste Sortie</a>';
+                        }
+                    },
+                    {
+                        "targets": 0,
+                        "searchable": false,
+                        "orderable": false,
+                        "render": function(data, type, row){
+                            return '<a href="#" class="updateProduit" data-id="'+row.id+'">Modifier</a>';
+                        }
+                    },
+                    {
+                        "targets": 0,
+                        "searchable": false,
+                        "orderable": false,
+                        "render": function(data, type, row){
+                            return '<a href="#" class="removeProduit" data-id="'+row.id+'">Supprimer</a>';
                         }
                     }
                 ]
