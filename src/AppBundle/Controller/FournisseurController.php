@@ -7,7 +7,8 @@
  */
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Produit;
+use AppBundle\Entity\Fournisseur;
+use AppBundle\Form\Type\FournisseurType;
 use AppBundle\Form\Type\ProduitType;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,25 +18,25 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class ProduitController
+ * Class FournisseurController
  *
- * @Route("/produit")
+ * @Route("/fournisseur")
  */
-class ProduitController extends Controller
+class FournisseurController extends Controller
 {
     /**
-     * @Route("/list", name="_challenge_produit_list")
+     * @Route("/list", name="_challenge_fournisseur_list")
      *
      * @return Response
      */
-    public function listProduit()
+    public function liste()
     {
-        return $this->render('AppBundle:Produit:list.html.twig');
+        return $this->render('AppBundle:Fournisseur:list.html.twig');
     }
 
     /**
-     * @Route("/add", name="_challenge_produit_add", options={"expose"=true})
-     * @Route("/update/{id}", name="_challenge_produit_update", options={"expose"=true})
+     * @Route("/add", name="_challenge_frs_add", options={"expose"=true})
+     * @Route("/update/{id}", name="_challenge_frs_update", options={"expose"=true})
      *
      * @param Request $request
      *
@@ -45,42 +46,42 @@ class ProduitController extends Controller
      *
      * @throws EntityNotFoundException
      */
-    public function addOrUpdateProduit(Request $request, $id = null)
+    public function addOrUpdateFrs(Request $request, $id = null)
     {
         $em = $this->getDoctrine()->getManager();
-        $produit = is_null($id) ? new Produit() : $em->getRepository('AppBundle:Produit')->find($id);
+        $frs = is_null($id) ? new Fournisseur() : $em->getRepository('AppBundle:Fournisseur')->find($id);
 
-        if (!$produit instanceof Produit) {
+        if (!$frs instanceof Fournisseur) {
             throw new EntityNotFoundException();
         }
-        $form = $this->createForm(ProduitType::class, $produit);
+        $form = $this->createForm(FournisseurType::class, $frs);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $em->persist($produit);
+                $em->persist($frs);
                 $em->flush();
-                $message = $request->get('_route') == '_challenge_produit_add' ? 'Ajout réussi' : 'Modification réussi';
+                $message = $request->get('_route') == '_challenge_frs_add' ? 'Ajout réussi' : 'Modification réussi';
                 $this->addFlash('success', $message);
             } catch (\Exception $exc) {
                 $this->addFlash('error', $exc->getMessage());
             }
 
-            return $this->redirect($this->generateUrl('_challenge_produit_list'));
+            return $this->redirect($this->generateUrl('_challenge_fournisseur_list'));
         }
 
-        return $this->render('AppBundle:Produit:create.html.twig', array(
+        return $this->render('AppBundle:Fournisseur:create.html.twig', array(
             'form' => $form->createView(),
         ));
     }
 
     /**
-     * @Route("/getProduits", name="_challenge_get_produits", options={"expose"=true})
+     * @Route("/get", name="_challenge_get_frs", options={"expose"=true})
      */
-    public function getProducts()
+    public function getFrs()
     {
-        $data = $this->get('challenge.common.service')->getDataToArray('AppBundle:Produit');
+        $data = $this->get('challenge.common.service')->getDataToArray('AppBundle:Fournisseur');
 
         $response = new JsonResponse();
 
@@ -96,7 +97,7 @@ class ProduitController extends Controller
     }
 
     /**
-     * @Route("/remove/{id}", name="_challenge_remove_product", options={"expose"=true})
+     * @Route("/remove/{id}", name="_challenge_remove_frs", options={"expose"=true})
      *
      * @param int $id
      *
@@ -106,14 +107,14 @@ class ProduitController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $produit = $em->getRepository('AppBundle:Produit')->find($id);
+        $frs = $em->getRepository('AppBundle:Fournisseur')->find($id);
         $dataReturn = array(
             'success' => false,
             'message' => '',
         );
-        if ($produit instanceof Produit) {
+        if ($frs instanceof Fournisseur) {
             try {
-                $em->remove($produit);
+                $em->remove($frs);
                 $em->flush();
                 $dataReturn['success'] = true;
                 $dataReturn['message'] = 'Suppression réussie';
@@ -121,7 +122,7 @@ class ProduitController extends Controller
                 $dataReturn['message'] = $exc->getMessage();
             }
         } else {
-            $dataReturn['message'] = 'Ce produit a déjà été supprimé';
+            $dataReturn['message'] = 'Ce fournisseur a déjà été supprimé';
         }
         $response = new JsonResponse();
         $response->setData($dataReturn);

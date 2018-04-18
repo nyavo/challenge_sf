@@ -1,0 +1,80 @@
+{% extends '::base.html.twig' %}
+{% block title %}Liste fournisseurs{% endblock %}
+{% block body %}
+    <h1>Liste des fournisseurs</h1>
+    <div id="message-bloc" style="display: none"></div>
+    <table id="list-produit">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th style="width: 5%"></th>
+                <th style="width: 5%"></th>
+            </tr>
+        </thead>
+    </table>
+
+    <button id="addNewFrs">Nouveau fournisseur</button>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function(){
+            $('#list-produit').DataTable({
+                "processing": true,
+                "serverSide": false,
+                "searching": true,
+                "paging": true,
+                "info": false,
+                "ajax": {
+                    "url": Routing.generate('_challenge_get_frs'),
+                    "type": "POST"
+                },
+                order: [],
+                "pageLength": 10,
+                "bLengthChange": false,
+                "autoWidth": false,
+                "columns": [
+                    {"data": "nomFournisseur"},
+                    {
+                        "targets": 0,
+                        "searchable": false,
+                        "orderable": false,
+                        "render": function(data, type, row){
+                            return '<a href="#" class="updateFrs" data-id="'+row.id+'">Modifier</a>';
+                        }
+                    },
+                    {
+                        "targets": 0,
+                        "searchable": false,
+                        "orderable": false,
+                        "render": function(data, type, row){
+                            return '<a href="#" class="removeFrs" data-id="'+row.id+'">Supprimer</a>';
+                        }
+                    }
+                ]
+            });
+        });
+
+        $(document).on('click', '.updateFrs', function(){
+            location.href = Routing.generate('_challenge_frs_update', {'id': $(this).data('id')});
+        });
+
+        $(document).on('click', '.removeFrs', function(){
+            $.ajax({
+                url: Routing.generate('_challenge_remove_frs', {'id': $(this).data('id')}),
+                success: function(_resp) {
+                    $('#message-bloc').text(_resp.message);
+                    $('#message-bloc').show();
+                    if (_resp.success) {
+                        $('#list-produit').DataTable().ajax.reload();
+                    }
+                }
+            });
+        });
+
+        $('#addNewFrs').on('click', function(){
+            location.href = Routing.generate('_challenge_frs_add');
+        })
+    </script>
+{% endblock %}

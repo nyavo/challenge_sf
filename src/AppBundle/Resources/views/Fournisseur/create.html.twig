@@ -1,0 +1,16 @@
+{% extends '::base.html.twig' %}
+{% block title %}{% if app.request.get('_route') == '_challenge_frs_add' %}Ajout Fournisseur{% else %}Modification Fournisseur{% endif %}{% endblock %}
+{% block body %}
+    <h1>
+        {% if app.request.get('_route') == '_challenge_frs_add' %}
+            Nouveau Fournisseur
+        {% else %}
+            Modification Fournisseur
+        {% endif %}
+    </h1>
+    {{ form_start(form) }}
+    <div>{{ form_label(form.nomFournisseur) }} : {{ form_widget(form.nomFournisseur) }}
+        <p>{{ form_errors(form.nomFournisseur) }}</p>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
