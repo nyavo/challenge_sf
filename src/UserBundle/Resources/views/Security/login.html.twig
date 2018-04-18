@@ -1,0 +1,125 @@
+{#{% extends "FOSUserBundle::layout.html.twig" %}#}
+{% extends "::base.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block title %}Authentification{% endblock %}
+
+{% block body %}
+
+{# http://bootsnipp.com/snippets/featured/login-amp-signup-forms-in-panel #}
+
+    <div id="login-page">
+        <div class="container">
+            <form class="form-login" action="{{ path("fos_user_security_check") }}" method="post">
+                <h2 class="form-login-heading">Authentification</h2>
+                {% if csrf_token %}
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                {% endif %}
+                <div class="login-wrap">
+                    {% if error %}
+                        <div class="alert alert-danger alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            {{ error.messageKey|trans(error.messageData, 'security') }}
+                        </div>
+                    {% endif %}
+                    {#<label for="username">{{ 'security.login.username'|trans }}</label>#}
+                    <input class="form-control" type="text" placeholder="{{ 'security.login.username'|trans }}" id="username" name="_username" value="{{ last_username }}" required="required" />
+                    <br>
+                    {#<label for="password">{{ 'security.login.password'|trans }}</label>#}
+                    <input class="form-control" placeholder="{{ 'security.login.password'|trans }}" type="password" id="password" name="_password" required="required" />
+
+                    <label class="checkbox">
+                    <span class="pull-right">
+                        <a data-toggle="modal" href="#resetModal"> Forgot Password?</a>
+                    </span>
+                    </label>
+                    <button type="submit" class="btn btn-theme btn-block">
+                        <i class="fa fa-lock"></i> {{ 'security.login.submit'|trans }}
+                    </button>
+                    <hr>
+                    <div class="registration">
+                        Don't have an account yet ? <br>
+                        <a data-toggle="modal" href="#registerModal">
+                            Create an account
+                        </a>
+                    </div>
+                    {#<input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />#}
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="resetModal" class="modal fade" aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Forgot Password ?</h4>
+                </div>
+                <div class="modal-body">
+                    {#{{ render(controller('FOSUserBundle:Resetting:request')) }}#}
+                </div>
+                <div class="modal-footer">
+                    <button data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
+                    <button class="btn btn-theme" type="button">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="registerModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Create an account</h4>
+                </div>
+                <div class="modal-body">
+                    {#{{ render(controller('FOSUserBundle:Registration:register')) }}#}
+                </div>
+                <div class="modal-footer">
+                    <button data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
+                    <button class="btn btn-theme" type="button">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{#{% block stylesheets %}
+    {{ parent() }}
+
+    {% stylesheets
+        'js/jquery-ui-1.11.3/jquery-ui.min.css'
+        'js/ajaxloader-1.5.1/ajaxloader.css'
+    filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+        'js/jquery-ui-1.11.3/jquery-ui.min.js'
+        'js/ajaxloader-1.5.1/jquery.ajaxloader.min.js'
+        'js/jquery.tooltipster.min.js'
+        'js/main.js'
+        'bundles/telmauser/js/login.js'
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script type="text/javascript">
+        var lblPasswordResetting = "{{ 'label.password.resetting'|trans([], 'messages') }}";
+        var lblSend = "{{ 'label.send'|trans([], 'messages') }}";
+        var resetPasswordUrl = "{{ path('ajax_reset_password') }}";
+    </script>
+{% endblock %}#}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset("bundles/user/js/jquery.backstretch.min.js") }}"></script>
+    <script>
+        $.backstretch("{{ asset("bundles/user/img/login-bg.jpg") }}", {speed: 500});
+    </script>
+{% endblock %}
