@@ -13,25 +13,20 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        front:
-            pattern: ^/front.*
-            security: false
+#        front:
+#            pattern: ^/front.*
+#            logout: false
+#            anonymous: true
         login:
-            pattern: ^/login$
-            security: false
-        register:
-            pattern: ^/register.*
-            security: false
-        resetting:
-            pattern: ^/resetting.*
-            security: false
+            pattern:   ^/(login$|register|resetting)
+            anonymous: true
         main:
             pattern: ^/.*
             form_login:
                 provider: fos_userbundle
                 csrf_token_generator: security.csrf.token_manager
             logout: true
-            anonymous: false
+            anonymous: true
 #            anonymous: ~
             # activate different ways to authenticate
 
@@ -40,3 +35,10 @@ security:
 
             # https://symfony.com/doc/current/security/form_login_setup.html
             #form_login: ~
+
+    access_control:
+        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/front/commande, roles: ROLE_USER }
+        - { path: ^/front/panier, roles: ROLE_USER }
+        - { path: ^/front.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/.*, roles: ROLE_USER }
