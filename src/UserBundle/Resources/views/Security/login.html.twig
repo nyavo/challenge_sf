@@ -30,9 +30,6 @@
                     <input class="form-control" placeholder="{{ 'security.login.password'|trans }}" type="password" id="password" name="_password" required="required" />
 
                     <label class="checkbox">
-                    <span class="pull-right">
-                        <a data-toggle="modal" href="#resetModal"> Forgot Password?</a>
-                    </span>
                     </label>
                     <button type="submit" class="btn btn-theme btn-block">
                         <i class="fa fa-lock"></i> {{ 'security.login.submit'|trans }}
@@ -40,47 +37,13 @@
                     <hr>
                     <div class="registration">
                         Don't have an account yet ? <br>
-                        <a data-toggle="modal" href="#registerModal">
+                        <a href="{{ path('fos_user_registration_register') }}">
                             Create an account
                         </a>
                     </div>
                     {#<input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />#}
                 </div>
             </form>
-        </div>
-    </div>
-    <div id="resetModal" class="modal fade" aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Forgot Password ?</h4>
-                </div>
-                <div class="modal-body">
-                    {#{{ render(controller('FOSUserBundle:Resetting:request')) }}#}
-                </div>
-                <div class="modal-footer">
-                    <button data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
-                    <button class="btn btn-theme" type="button">Submit</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="registerModal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Create an account</h4>
-                </div>
-                <div class="modal-body">
-                    {#{{ render(controller('FOSUserBundle:Registration:register')) }}#}
-                </div>
-                <div class="modal-footer">
-                    <button data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
-                    <button class="btn btn-theme" type="button">Submit</button>
-                </div>
-            </div>
         </div>
     </div>
 {% endblock %}

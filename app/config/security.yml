@@ -37,7 +37,7 @@ security:
             #form_login: ~
 
     access_control:
-        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/(login$|register|resetting), roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/front/commande, roles: ROLE_USER }
         - { path: ^/front/panier, roles: ROLE_USER }
         - { path: ^/front.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
