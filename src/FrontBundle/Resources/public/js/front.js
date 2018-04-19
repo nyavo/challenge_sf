@@ -12,7 +12,8 @@ function getCommand() {
             "titre": value.titre,
             "description": value.description,
             "prix": value.prix,
-            "quantite": value.quantite
+            "quantite": value.quantite,
+            "total": value.total
         });
     });
 
@@ -37,10 +38,12 @@ $('#panier').on('click', function () {
             'titre': $('#titre').text(),
             'description': $('#description').text(),
             'prix': $('#prix').text(),
-            'quantite': $('#nbCommand').val()
+            'quantite': $('#nbCommand').val(),
+            'total': parseInt($('#prix').text())*$('#nbCommand').val()
         };
     } else {
         produitCommand['prod'+produitId].quantite = $('#nbCommand').val();
+        produitCommand['prod'+produitId].total = parseInt($('#prix').text())*$('#nbCommand').val();
     }
 
     localStorage.setItem('command', JSON.stringify(produitCommand));
@@ -129,6 +132,7 @@ function createTablePanier()
             {"data": "description"},
             {"data": "prix"},
             {"data": "quantite"},
+            {"data": "total"},
             {
                 "targets": 0,
                 "searchable": false,
