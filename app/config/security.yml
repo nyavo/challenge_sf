@@ -13,19 +13,25 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        login:
+        front:
             pattern: ^/front$
             security: false
         login:
             pattern: ^/login$
             security: false
+        register:
+            pattern: ^/register.*
+            security: false
+        resetting:
+            pattern: ^/resetting.*
+            security: false
         main:
-            pattern: ^/
+            pattern: ^/.*
             form_login:
                 provider: fos_userbundle
                 csrf_token_generator: security.csrf.token_manager
             logout: true
-            anonymous:    true
+            anonymous: false
 #            anonymous: ~
             # activate different ways to authenticate
 
