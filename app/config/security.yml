@@ -14,7 +14,7 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         front:
-            pattern: ^/front$
+            pattern: ^/front.*
             security: false
         login:
             pattern: ^/login$

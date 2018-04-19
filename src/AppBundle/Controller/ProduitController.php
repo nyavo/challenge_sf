@@ -79,26 +79,6 @@ class ProduitController extends Controller
     }
 
     /**
-     * @Route("/getProduits", name="_challenge_get_produits", options={"expose"=true})
-     */
-    public function getProducts()
-    {
-        $data = $this->get('challenge.common.service')->getDataToArray('AppBundle:Produit');
-
-        $response = new JsonResponse();
-
-        $response->setData(
-            array(
-                'recordsTotal'    => count($data),
-                'recordsFiltered' => count($data),
-                'data'            => $data,
-            )
-        );
-
-        return $response;
-    }
-
-    /**
      * @Route("/remove/{id}", name="_challenge_remove_product", options={"expose"=true})
      *
      * @param int $id

@@ -10,6 +10,7 @@ namespace FrontBundle\Controller;
 use AppBundle\Entity\Produit;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -54,5 +55,34 @@ class CatalogueController extends Controller
         return $this->render('FrontBundle:Produit:fiche.html.twig', array(
             'produit' => $produit,
         ));
+    }
+
+    /**
+     * @Route("/getProduits", name="_challenge_get_produits", options={"expose"=true})
+     */
+    public function getProducts()
+    {
+        $data = $this->get('challenge.common.service')->getDataToArray('AppBundle:Produit');
+
+        $response = new JsonResponse();
+
+        $response->setData(
+            array(
+                'recordsTotal'    => count($data),
+                'recordsFiltered' => count($data),
+                'data'            => $data,
+            )
+        );
+
+        return $response;
+    }
+    /**
+     * @Route("/panier", name="_challenge_front_voir_panier", options={"expose"=true})
+     *
+     * @return Response
+     */
+    public function voirPanier()
+    {
+        return $this->render('FrontBundle:Produit:panier.html.twig');
     }
 }
