@@ -228,10 +228,8 @@ class ProduitController extends Controller
 
         if ($form->isSubmitted() && $form->isValid())
         {
-            if (isset($produit))
-            {
-                $flux->setProduit($produit);
-            }
+            $flux->setProduit($produit);
+            
             $update = $request->get('_route') == '_challenge_update_flux';
             $this->get('challenge.common.service')->saveFlux($produit, $flux, $update);
         }

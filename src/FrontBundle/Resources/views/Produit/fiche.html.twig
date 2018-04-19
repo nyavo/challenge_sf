@@ -1,0 +1,67 @@
+{% extends '::base.html.twig' %}
+{% block title %}Fiche Produit{% endblock %}
+
+{% block body %}
+    <div>
+        <h3 id="titre">{{ produit.titre }}</h3>
+    </div>
+    <div class="row well">
+        <div>
+            Description : <span id="description">{{ produit.description }}</span>
+        </div>
+        <div>
+            Prix : <span id="prix">{{ produit.prix }}</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="nbCommand">Quantité commande</label> :
+        <input type="number" id="nbCommand" class="form-control">
+    </div>
+    <input type="hidden" id="produitId" value="{{ produit.id }}">
+    <div class="btn btn-primary" id="panier">Ajouter au pannier</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            var produitId = $('#produitId').val();
+            var produitCommand = localStorage.getItem('command') !== null ? localStorage.getItem('command') : "{}";
+            produitCommand = JSON.parse(produitCommand);
+            if (produitCommand['prod'+produitId] !== undefined) {
+                $('#nbCommand').val(produitCommand['prod'+produitId].quantite);
+            }
+        });
+        $('#panier').on('click', function () {
+            var produitId = $('#produitId').val();
+            var produitCommand = localStorage.getItem('command') !== null ? localStorage.getItem('command') : "{}";
+            produitCommand = JSON.parse(produitCommand);
+            if (produitCommand['prod'+produitId] === undefined) {
+                produitCommand['prod'+produitId] = {
+                    'description': $('#description').text(),
+                    'prix': $('#prix').text(),
+                    'quantite': $('#nbCommand').val()
+                };
+            } else {
+                produitCommand['prod'+produitId].quantite = $('#nbCommand').val();
+            }
+
+            localStorage.setItem('command', JSON.stringify(produitCommand));
+            calcSomme();
+        });
+
+        function calcSomme(){
+            var command = localStorage.getItem('command');
+            var total = 0;
+
+            if (command !== null) {
+                command = JSON.parse(command);
+                $.each(command, function (index ,c) {
+                    total += c.quantite * c.prix;
+                });
+            }
+
+            localStorage.setItem('total', total);
+        }
+    </script>
+{% endblock %}
