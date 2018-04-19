@@ -7,6 +7,7 @@
  */
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use UserBundle\Entity\User;
 
@@ -49,6 +50,13 @@ class Commande
      * @ORM\Column(name="montant_total", type="integer")
      */
     private $montantTotal;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="CommandeProduit", mappedBy="commande")
+     */
+    private $produits;
 
     /**
      * @return int
@@ -112,5 +120,21 @@ class Commande
     public function setMontantTotal($montantTotal)
     {
         $this->montantTotal = $montantTotal;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getProduits()
+    {
+        return $this->produits;
+    }
+
+    /**
+     * @param ArrayCollection $produits
+     */
+    public function setProduits($produits)
+    {
+        $this->produits = $produits;
     }
 }

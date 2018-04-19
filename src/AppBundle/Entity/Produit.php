@@ -7,6 +7,7 @@
  */
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -67,6 +68,13 @@ class Produit
      * @ORM\Column(type="string", length=20, columnDefinition="enum('soleil', 'vue', 'sport')")
      */
     private $type;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="CommandeProduit", mappedBy="produit")
+     */
+    private $commandes;
 
     /**
      * @var Fournisseur
@@ -202,5 +210,21 @@ class Produit
     public function setFournisseur($fournisseur)
     {
         $this->fournisseur = $fournisseur;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCommandes()
+    {
+        return $this->commandes;
+    }
+
+    /**
+     * @param mixed $commandes
+     */
+    public function setCommandes($commandes)
+    {
+        $this->commandes = $commandes;
     }
 }
