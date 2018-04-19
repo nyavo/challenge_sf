@@ -5,7 +5,7 @@
  * Date: 19/04/2018
  * Time: 17:25
  */
-namespace FrontBundle\Entity;
+namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use UserBundle\Entity\User;
