@@ -169,7 +169,13 @@ $('#confirmCommand').on('click', function(){
         data: $("#savePanierForm").serialize(),
         success: function(data)
         {
-            
+            if (data.success) {
+                localStorage.removeItem('command');
+                localStorage.removeItem('total');
+                location.href = Routing.generate('_challenge_front_produit_list');
+            } else {
+                location.href = Routing.generate('_challenge_front_voir_panier');
+            }
         }
     });
 });

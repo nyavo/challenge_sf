@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CatalogueController extends Controller
 {
     /**
-     * @Route("/produits", name="_challenge_front_produit_list")
+     * @Route("/produits", name="_challenge_front_produit_list", options={"expose"=true})
      *
      * @return Response
      */
@@ -113,7 +113,6 @@ class CatalogueController extends Controller
 
         $dataReturn = array(
             'success' => false,
-            'message' => '',
         );
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -145,10 +144,10 @@ class CatalogueController extends Controller
                 $em->clear();
                 $conn->commit();
                 $dataReturn['success'] = true;
-                $dataReturn['message'] = 'Votre commande est enregistrée.';
+                $this->addFlash('success', 'Votre commande est enregistrée.');
             } catch (\Exception $exc) {
                 $conn->rollback();
-                $dataReturn['message'] = "Votre commande n'a pas pu être enregistrée.";
+                $this->addFlash('error', "Votre commande n'a pas pu être enregistrée.");
             }
         }
 
