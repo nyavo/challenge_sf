@@ -1,30 +1,5 @@
 $(document).ready(function(){
-    $('#panier-list').DataTable({
-        "processing": true,
-        "serverSide": false,
-        "searching": true,
-        "paging": true,
-        "info": false,
-        "data": getCommand(),
-        order: [],
-        "pageLength": 10,
-        "bLengthChange": false,
-        "autoWidth": false,
-        "columns": [
-            {"data": "titre"},
-            {"data": "description"},
-            {"data": "prix"},
-            {"data": "quantite"},
-            {
-                "targets": 0,
-                "searchable": false,
-                "orderable": false,
-                "render": function(data, type, row){
-                    return '<a href="#" class="voirFiche" data-id="'+row.id+'">Voir fiche</a>';
-                }
-            }
-        ]
-    });
+    createTablePanier();
 });
 
 function getCommand() {
@@ -124,3 +99,59 @@ $(document).ready(function(){
 $('#voirDetailPanier').on('click', function() {
     location.href = Routing.generate('_challenge_front_voir_panier');
 });
+
+$(document).on('click', '.supprimerPanier', function(){
+    var produitCommand = JSON.parse(localStorage.getItem('command'));
+
+    delete produitCommand['prod'+$(this).data('id')];
+
+    localStorage.setItem('command', JSON.stringify(produitCommand));
+    calcSomme();
+    createTablePanier();
+});
+
+function createTablePanier()
+{
+    $('#panier-list').DataTable({
+        "processing": true,
+        "serverSide": false,
+        "searching": true,
+        "paging": true,
+        "info": false,
+        "destroy": true,
+        "data": getCommand(),
+        order: [],
+        "pageLength": 10,
+        "bLengthChange": false,
+        "autoWidth": false,
+        "columns": [
+            {"data": "titre"},
+            {"data": "description"},
+            {"data": "prix"},
+            {"data": "quantite"},
+            {
+                "targets": 0,
+                "searchable": false,
+                "orderable": false,
+                "render": function(data, type, row){
+                    // return '<div class="btn btn-danger btn-sm voirFiche" data-id="'+row.id+'"><i class="fa fa-edit"></i></div>';
+                    return '<a href="#" class="voirFiche" data-id="'+row.id+'"><i class="fa fa-edit"></i></a>';
+                }
+            },
+            {
+                "targets": 0,
+                "searchable": false,
+                "orderable": false,
+                "render": function(data, type, row){
+                    // return '<div class="btn btn-danger btn-sm voirFiche" data-id="'+row.id+'"><i class="fa fa-edit"></i></div>';
+                    return '<a href="#" class="supprimerPanier" data-id="'+row.id+'"><i class="fa fa-trash-o"></i></a>';
+                }
+            }
+        ]
+    });
+
+    var total = localStorage.getItem('total') !== null ? localStorage.getItem('total') : 0;
+
+    $('#total').text(total);
+    $('#totalBloc').show();
+}

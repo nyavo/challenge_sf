@@ -9,8 +9,14 @@
             <th>Description</th>
             <th>Prix</th>
             <th>Quantité</th>
-            <th></th>
+            <th style="width: 5%"></th>
+            <th style="width: 5%"></th>
         </tr>
         </thead>
     </table>
+
+    <div class="well" id="totalBloc" style="display: none">
+        <label>Total</label> : <span id="total"></span>
+    </div>
+    <div class="btn btn-success btn-sm" id="confirmCommand"><i class="fa fa-save"></i> Confirmer la commande</div>
 {% endblock %}
