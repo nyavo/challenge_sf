@@ -82,3 +82,6 @@ fos_user:
     from_email:
         address: nyavo01@gmail.com
         sender_name: Ny Avo
+    registration:
+        form:
+            type: UserBundle\Form\Type\RegistrationFormType
