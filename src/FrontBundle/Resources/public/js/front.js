@@ -140,8 +140,7 @@ function createTablePanier()
                 "render": function(data, type, row){
                     // return '<div class="btn btn-danger btn-sm voirFiche" data-id="'+row.id+'"><i class="fa fa-edit"></i></div>';
                     return '<a href="#" class="voirFiche" data-id="'+row.id+'"><i class="fa fa-edit"></i></a>' +
-                        '<input type="hidden" name="produitId[pr]" value="'+row.id+'">' +
-                        '<input type="hidden" name="qteId[]" value="'+row.quantite+'">';
+                        '<input type="hidden" name="produits['+row.id+']" value="'+row.quantite+'">';
                 }
             },
             {
@@ -162,3 +161,15 @@ function createTablePanier()
     $('#command_montantTotal').val(total);
     $('#totalBloc').show();
 }
+
+$('#confirmCommand').on('click', function(){
+    $.ajax({
+        type: "POST",
+        url: Routing.generate('_challenge_front_panier_save'),
+        data: $("#savePanierForm").serialize(),
+        success: function(data)
+        {
+            
+        }
+    });
+});

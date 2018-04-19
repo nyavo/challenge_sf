@@ -8,6 +8,7 @@
 namespace FrontBundle\Controller;
 
 use AppBundle\Entity\Commande;
+use AppBundle\Entity\CommandeProduit;
 use AppBundle\Entity\Produit;
 use AppBundle\Form\Type\CommandType;
 use Doctrine\ORM\EntityNotFoundException;
@@ -92,8 +93,68 @@ class CatalogueController extends Controller
         ));
     }
 
-    public function savePanier()
+    /**
+     * @Route("/panier/save", name="_challenge_front_panier_save", options={"expose"=true})
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function savePanier(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
+        $conn = $em->getConnection();
+        $commande = new Commande();
+        $form = $this->createForm(CommandType::class, $commande);
 
+        $batchSize = $this->getParameter('batch_size');
+
+        $form->handleRequest($request);
+
+        $dataReturn = array(
+            'success' => false,
+            'message' => '',
+        );
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $commande->setClient($this->getUser());
+            $commande->setDateCommande(new \DateTime());
+
+            try {
+                $conn->beginTransaction();
+                $em->persist($commande);
+                $em->flush();
+
+                $produits = $request->get('produits');
+                $i = 0;
+                foreach ($produits as $produitId => $quantite) {
+                    $oProduit = $em->getRepository('AppBundle:Produit')->find($produitId);
+                    $commandeProduit = new CommandeProduit();
+                    $commandeProduit->setCommande($commande);
+                    $commandeProduit->setProduit($oProduit);
+                    $commandeProduit->setQuantiteCommande($quantite);
+
+                    $em->persist($commandeProduit);
+                    $i++;
+                    if ($i % $batchSize == 0) {
+                        $em->flush();
+                        $em->clear();
+                    }
+                }
+                $em->flush();
+                $em->clear();
+                $conn->commit();
+                $dataReturn['success'] = true;
+                $dataReturn['message'] = 'Votre commande est enregistrée.';
+            } catch (\Exception $exc) {
+                $conn->rollback();
+                $dataReturn['message'] = "Votre commande n'a pas pu être enregistrée.";
+            }
+        }
+
+        $response = new JsonResponse();
+        $response->setData($dataReturn);
+
+        return $response;
     }
 }

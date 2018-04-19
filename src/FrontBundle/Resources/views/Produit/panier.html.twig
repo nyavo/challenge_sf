@@ -3,7 +3,7 @@
 {% block title %}Votre panier{% endblock %}
 {% block body %}
     <h1>Votre panier</h1>
-    {{ form_start(form) }}
+    {{ form_start(form, {'attr': {'id': 'savePanierForm'}}) }}
     <table id="panier-list">
         <thead>
         <tr>
@@ -21,6 +21,6 @@
     <div class="well" id="totalBloc" style="display: none">
         <label>Total</label> : <span id="total"></span>
     </div>
-    <button type="submit" class="btn btn-success btn-sm" id="confirmCommand"><i class="fa fa-save"></i> Confirmer la commande</button>
+    <div class="btn btn-success btn-sm" id="confirmCommand"><i class="fa fa-save"></i> Confirmer la commande</div>
     {{ form_end(form) }}
 {% endblock %}
