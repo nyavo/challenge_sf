@@ -7,7 +7,9 @@
  */
 namespace FrontBundle\Controller;
 
+use AppBundle\Entity\Commande;
 use AppBundle\Entity\Produit;
+use AppBundle\Form\Type\CommandType;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -83,6 +85,15 @@ class CatalogueController extends Controller
      */
     public function voirPanier()
     {
-        return $this->render('FrontBundle:Produit:panier.html.twig');
+        $form = $this->createForm(CommandType::class, new Commande());
+
+        return $this->render('FrontBundle:Produit:panier.html.twig', array(
+            "form" => $form->createView(),
+        ));
+    }
+
+    public function savePanier()
+    {
+
     }
 }

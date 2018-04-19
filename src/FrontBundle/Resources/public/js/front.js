@@ -139,7 +139,9 @@ function createTablePanier()
                 "orderable": false,
                 "render": function(data, type, row){
                     // return '<div class="btn btn-danger btn-sm voirFiche" data-id="'+row.id+'"><i class="fa fa-edit"></i></div>';
-                    return '<a href="#" class="voirFiche" data-id="'+row.id+'"><i class="fa fa-edit"></i></a>';
+                    return '<a href="#" class="voirFiche" data-id="'+row.id+'"><i class="fa fa-edit"></i></a>' +
+                        '<input type="hidden" name="produitId[pr]" value="'+row.id+'">' +
+                        '<input type="hidden" name="qteId[]" value="'+row.quantite+'">';
                 }
             },
             {
@@ -157,5 +159,6 @@ function createTablePanier()
     var total = localStorage.getItem('total') !== null ? localStorage.getItem('total') : 0;
 
     $('#total').text(total);
+    $('#command_montantTotal').val(total);
     $('#totalBloc').show();
 }
