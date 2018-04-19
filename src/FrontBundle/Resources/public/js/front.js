@@ -172,10 +172,51 @@ $('#confirmCommand').on('click', function(){
             if (data.success) {
                 localStorage.removeItem('command');
                 localStorage.removeItem('total');
-                location.href = Routing.generate('_challenge_front_produit_list');
+                location.href = Routing.generate('_challenge_front_commande_list');
             } else {
                 location.href = Routing.generate('_challenge_front_voir_panier');
             }
         }
+    });
+});
+
+$(document).ready(function() {
+    $('#list-commande').DataTable({
+        "processing": true,
+        "serverSide": false,
+        "searching": true,
+        "paging": true,
+        "info": false,
+        "ajax": {
+            "url": Routing.generate('_challenge_front_commande_list'),
+            "type": "POST"
+        },
+        order: [],
+        "pageLength": 10,
+        "bLengthChange": false,
+        "autoWidth": false,
+        "columns": [
+            {"data": "id"},
+            {
+                "data": "date",
+                "render": function(d) {
+                    var dateFlux = new Date(d.date);
+
+                    return ("0" + dateFlux.getDate()).slice(-2) + "-" + ("0"+(dateFlux.getMonth()+1)).slice(-2) + "-" +
+                        dateFlux.getFullYear() + " " + ("0" + dateFlux.getHours()).slice(-2) + ":" + ("0" + dateFlux.getMinutes()).slice(-2);
+                }
+            },
+            {"data": "client"},
+            {"data": "email"},
+            {"data": "montantTotal"},
+            {
+                "targets": 0,
+                "searchable": false,
+                "orderable": false,
+                "render": function(data, type, row){
+                    return '<a href="#" class="detailCommande" data-id="'+row.id+'">Détail</a>';
+                }
+            }
+        ]
     });
 });

@@ -1,0 +1,18 @@
+{% extends 'FrontBundle::front_layout.html.twig' %}
+{% block title %}Liste commande{% endblock %}
+{% block body %}
+    {{ parent() }}
+    <h1>Liste commande</h1>
+    <table id="list-commande">
+        <thead>
+            <tr>
+                <th>Numéro commande</th>
+                <th>Date</th>
+                <th>Client</th>
+                <th>Mail</th>
+                <th>Montant total</th>
+                <th></th>
+            </tr>
+        </thead>
+    </table>
+{% endblock %}

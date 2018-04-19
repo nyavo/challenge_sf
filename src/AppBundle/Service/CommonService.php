@@ -84,4 +84,17 @@ class CommonService
             $conn->rollback();
         }
     }
+
+    /**
+     * @return array
+     */
+    public function ficheCommande()
+    {
+        $dql = "SELECT c.id, c.dateCommande AS date, c.montantTotal, u.nom, u.prenom, u.email, TRIM(CONCAT(CONCAT(u.nom, ' '), u.prenom)) AS client
+                FROM AppBundle\Entity\Commande c
+                JOIN c.client u ";
+        $qb = $this->em->createQuery($dql);
+
+        return $qb->getArrayResult();
+    }
 }
