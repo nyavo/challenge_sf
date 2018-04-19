@@ -32,18 +32,21 @@ $('#panier').on('click', function () {
     var produitId = $('#produitId').val();
     var produitCommand = localStorage.getItem('command') !== null ? localStorage.getItem('command') : "{}";
     produitCommand = JSON.parse(produitCommand);
-    if (produitCommand['prod'+produitId] === undefined) {
-        produitCommand['prod'+produitId] = {
-            'id': produitId,
-            'titre': $('#titre').text(),
-            'description': $('#description').text(),
-            'prix': $('#prix').text(),
-            'quantite': $('#nbCommand').val(),
-            'total': parseInt($('#prix').text())*$('#nbCommand').val()
-        };
-    } else {
-        produitCommand['prod'+produitId].quantite = $('#nbCommand').val();
-        produitCommand['prod'+produitId].total = parseInt($('#prix').text())*$('#nbCommand').val();
+    var nbCommand = $('#nbCommand').val() == '' ? 0 : $('#nbCommand').val();
+    if (nbCommand > 0) {
+        if (produitCommand['prod' + produitId] === undefined) {
+            produitCommand['prod' + produitId] = {
+                'id': produitId,
+                'titre': $('#titre').text(),
+                'description': $('#description').text(),
+                'prix': $('#prix').text(),
+                'quantite': nbCommand,
+                'total': parseInt($('#prix').text()) * nbCommand
+            };
+        } else {
+            produitCommand['prod' + produitId].quantite = nbCommand;
+            produitCommand['prod' + produitId].total = parseInt($('#prix').text()) * nbCommand;
+        }
     }
 
     localStorage.setItem('command', JSON.stringify(produitCommand));

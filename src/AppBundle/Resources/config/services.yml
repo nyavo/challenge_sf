@@ -1,4 +1,4 @@
 services:
     challenge.common.service:
         class: AppBundle\Service\CommonService
-        arguments: ['@service_container', '@doctrine.orm.entity_manager']
+        arguments: ['@service_container', '@doctrine.orm.entity_manager', '@security.token_storage']

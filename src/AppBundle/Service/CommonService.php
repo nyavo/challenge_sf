@@ -12,6 +12,8 @@ use AppBundle\Entity\BonSortie;
 use AppBundle\Entity\Produit;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use UserBundle\Entity\User;
 
 /**
  * Class CommonService
@@ -28,10 +30,16 @@ class CommonService
      */
     private $em;
 
-    public function __construct(ContainerInterface $container, EntityManager $em)
+    /**
+     * @var User|null
+     */
+    private $user;
+
+    public function __construct(ContainerInterface $container, EntityManager $em, TokenStorageInterface $tokenStorage)
     {
         $this->container = $container;
         $this->em = $em;
+        $this->user = !empty($tokenStorage->getToken()) ? $tokenStorage->getToken()->getUser() : null;
     }
 
     /**
@@ -90,11 +98,19 @@ class CommonService
      */
     public function ficheCommande()
     {
-        $dql = "SELECT c.id, c.dateCommande AS date, c.montantTotal, u.nom, u.prenom, u.email, TRIM(CONCAT(CONCAT(u.nom, ' '), u.prenom)) AS client
-                FROM AppBundle\Entity\Commande c
-                JOIN c.client u ";
-        $qb = $this->em->createQuery($dql);
+        $data = array();
 
-        return $qb->getArrayResult();
+        if ($this->user != 'anon.') {
+            $dql = "SELECT c.id, c.dateCommande AS date, c.montantTotal, u.nom, u.prenom, u.email, TRIM(CONCAT(CONCAT(u.nom, ' '), u.prenom)) AS client
+                FROM AppBundle\Entity\Commande c
+                JOIN c.client u
+                WHERE u.id = :id";
+
+            $qb = $this->em->createQuery($dql);
+            $qb->setParameter('id', $this->user->getId());
+            $data =  $qb->getArrayResult();
+        }
+
+        return $data;
     }
 }
