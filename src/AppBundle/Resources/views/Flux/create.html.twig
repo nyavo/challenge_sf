@@ -1,3 +1,5 @@
+{% extends 'AppBundle::back_layout.html.twig' %}
+
 {% set fluxType = type=="e" ? 'entrée' : 'sortie' %}
 {% if app.request.get('_route') == '_challenge_update_flux' %}
     {% set titre = 'Modification ' ~ fluxType ~ ' pour le produit ' ~ produit.titre %}
@@ -5,7 +7,6 @@
     {% set titre = 'Création ' ~ fluxType ~ ' pour le produit ' ~ produit.titre %}
 {% endif %}
 
-{% extends '::base.html.twig' %}
 {% block title %}{{ titre }}{% endblock %}
 {% block body %}
     <h1>{{ titre }}</h1>

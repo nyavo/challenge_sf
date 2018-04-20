@@ -1,4 +1,4 @@
-{% extends '::base.html.twig' %}
+{% extends 'AppBundle::back_layout.html.twig' %}
 {% block title %}{% if app.request.get('_route') == '_challenge_frs_add' %}Ajout Fournisseur{% else %}Modification Fournisseur{% endif %}{% endblock %}
 {% block body %}
     <h1>

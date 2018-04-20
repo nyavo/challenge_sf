@@ -211,7 +211,17 @@ class ProduitController extends Controller
             $flux->setProduit($produit);
             
             $update = $request->get('_route') == '_challenge_update_flux';
-            $this->get('challenge.common.service')->saveFlux($produit, $flux, $update);
+            try {
+                $this->get('challenge.common.service')->saveFlux($produit, $flux, $update);
+                $this->addFlash('success', 'Ok');
+
+                return $this->redirect($this->generateUrl('_challenge_produit_flux', array(
+                    'id' => $produitId,
+                    'type' => $type,
+                )));
+            } catch (\Exception $exc) {
+                $this->addFlash('error', $exc->getMessage());
+            }
         }
 
         return $this->render('AppBundle:Flux:create.html.twig', array(

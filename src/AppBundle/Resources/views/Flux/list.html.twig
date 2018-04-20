@@ -1,9 +1,11 @@
+{% extends 'AppBundle::back_layout.html.twig' %}
+
 {% if type == 'e' %}
     {% set titre = "Bon entrée du produit " ~ produit.titre %}
 {% else %}
     {% set titre = "Bon de sortie du produit " ~ produit.titre %}
 {% endif %}
-{% extends '::base.html.twig' %}
+
 {% block title %}{{ titre }}{% endblock %}
 {% block body %}
 <h1>{{ titre }}</h1>

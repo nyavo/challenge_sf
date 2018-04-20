@@ -1,4 +1,4 @@
-{% extends '::base.html.twig' %}
+{% extends 'AppBundle::back_layout.html.twig' %}
 {% block title %}{% if app.request.get('_route') == '_challenge_produit_add' %}Ajout produit{% else %}Modification produit{% endif %}{% endblock %}
 {% block body %}
     <h1>
