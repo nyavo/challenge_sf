@@ -1,0 +1,35 @@
+{% extends 'FrontBundle::front_layout.html.twig' %}
+
+{% block title %}Détail commande{% endblock %}
+{% block body %}
+    <h1>Détail commande</h1>
+    <div class="well">
+        <div class="row">
+            <div class="col-md-12">
+                <label>Numéro commande</label> : {{ commande.id }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label>Date</label> : {{ commande.dateCommande|date("m/d/Y") }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label>Montant total</label> : {{ commande.montantTotal }}
+            </div>
+        </div>
+    </div>
+
+    <table id="command-produits-list">
+        <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Quantité acheté</th>
+            <th>Prix Unitaire</th>
+            <th>Prix Total</th>
+        </tr>
+        </thead>
+    </table>
+    <input type="hidden" id="commandId" value="{{ commande.id }}">
+{% endblock %}

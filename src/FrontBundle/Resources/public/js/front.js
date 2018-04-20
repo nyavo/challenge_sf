@@ -175,7 +175,7 @@ $('#confirmCommand').on('click', function(){
             if (data.success) {
                 localStorage.removeItem('command');
                 localStorage.removeItem('total');
-                location.href = Routing.generate('_challenge_front_commande_list');
+                location.href = Routing.generate('_challenge_front_commande');
             } else {
                 location.href = Routing.generate('_challenge_front_voir_panier');
             }
@@ -220,6 +220,33 @@ $(document).ready(function() {
                     return '<a href="#" class="detailCommande" data-id="'+row.id+'">Détail</a>';
                 }
             }
+        ]
+    });
+});
+
+$(document).on('click', '.detailCommande', function(){
+    location.href = Routing.generate('_challenge_front_commande_detail', {'id': $(this).data('id')});
+});
+
+$(document).ready(function(){
+    $('#command-produits-list').DataTable({
+        "processing": true,
+        "serverSide": false,
+        "searching": true,
+        "paging": true,
+        "info": false,
+        "ajax": {
+            "url": Routing.generate('_challenge_front_commande_produits', {"id": $('#commandId').val()}),
+        },
+    order: [],
+        "pageLength": 10,
+        "bLengthChange": false,
+        "autoWidth": false,
+        "columns": [
+            { "data": "titre" },
+            { "data": "quantite" },
+            { "data": "prix" },
+            { "data": "total" }
         ]
     });
 });
