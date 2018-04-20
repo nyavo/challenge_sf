@@ -13,10 +13,6 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-#        front:
-#            pattern: ^/front.*
-#            logout: false
-#            anonymous: true
         login:
             pattern:   ^/(login$|register|resetting)
             anonymous: true
@@ -25,7 +21,9 @@ security:
             form_login:
                 provider: fos_userbundle
                 csrf_token_generator: security.csrf.token_manager
-            logout: true
+            logout:
+                path:   fos_user_security_logout
+                target: _challenge_front_produit_list
             anonymous: true
 #            anonymous: ~
             # activate different ways to authenticate
@@ -41,4 +39,5 @@ security:
         - { path: ^/front/commande, roles: ROLE_USER }
         - { path: ^/front/panier, roles: ROLE_USER }
         - { path: ^/front.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/.*, roles: ROLE_USER }
+        - { path: ^/back.*, roles: ROLE_USER }
+        - { path: ^/.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
